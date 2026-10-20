@@ -72,7 +72,7 @@ export const MONO = '"JetBrains Mono", ui-monospace, monospace'
 export const C = {
   ink: '#0E0E0C',
   paper: '#EDEAE2',
-  signal: '#FF4A1C',
+  signal: '#E4002B',
   cobalt: '#2337FF',
   sky: '#8EA0FF',
   sun: '#FFC94A',
@@ -81,6 +81,6 @@ export const C = {
 // "r,g,b" strings for building rgba() with a varying alpha
 export const RGB = {
   paper: '237,234,226',
-  signal: '255,74,28',
+  signal: '228,0,43',
   sky: '142,160,255',
 }

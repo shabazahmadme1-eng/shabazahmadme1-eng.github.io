@@ -215,7 +215,7 @@ function SecHead({ n, name }) {
 function Hero() {
   const nameRef = useRef(null)
   useFit(nameRef, [
-    ['.name-1', 1, 42],
+    ['.name-1', 0.96, 42],
     ['.name-2', 0.79, 20],
   ])
   return (

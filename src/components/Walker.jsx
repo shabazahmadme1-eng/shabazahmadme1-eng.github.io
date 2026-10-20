@@ -163,7 +163,7 @@ export default function Walker({ frame, onFrame }) {
     dot(ctx, p.head, 10, C.paper)
     limbs(ctx, p, 'L', C.paper, 4)
 
-    for (const j of [p.L.knee, p.L.ankle, p.L.toe, p.L.elbow, p.L.wrist, p.pelvis, p.shoulder]) dot(ctx, j, 4.5, C.signal, C.cobalt)
+    for (const j of [p.L.knee, p.L.ankle, p.L.toe, p.L.elbow, p.L.wrist, p.pelvis, p.shoulder]) dot(ctx, j, 4.5, C.ink, C.paper)
 
     // annotation column to the right of the figure, with leader lines
     ctx.font = `500 9px ${MONO}`
@@ -190,7 +190,7 @@ export default function Walker({ frame, onFrame }) {
     const age = t - state.flash
     if (age < 0.45) {
       const k = age / 0.45
-      ctx.strokeStyle = `rgba(${RGB.signal},${1 - k})`
+      ctx.strokeStyle = `rgba(${RGB.paper},${1 - k})`
       ctx.lineWidth = 2.5
       ctx.beginPath()
       ctx.arc(state.fx, state.fy, 4 + 26 * k, 0, Math.PI * 2)
@@ -208,7 +208,7 @@ export default function Walker({ frame, onFrame }) {
     const spike = Math.exp(-Math.max(0, t - state.flash) / 0.16) * 1.3
     state.trace.push(0.5 * Math.sin(2 * phi) + 0.22 * Math.sin(3 * phi + 1.1) + spike)
     if (state.trace.length > VWV) state.trace.shift()
-    ctx.strokeStyle = C.signal
+    ctx.strokeStyle = C.ink
     ctx.lineWidth = 2.5
     ctx.lineJoin = 'round'
     ctx.beginPath()

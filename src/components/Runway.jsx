@@ -1,7 +1,7 @@
 import { useCanvas, MONO } from '../lib/useCanvas'
 
 const CLASSES = [
-  { name: 'crack', color: '#FF4A1C', p: 0.5 },
+  { name: 'crack', color: '#E4002B', p: 0.5 },
   { name: 'spalling', color: '#FFC94A', p: 0.3 },
   { name: 'FOD', color: '#8EA0FF', p: 0.2 },
 ]

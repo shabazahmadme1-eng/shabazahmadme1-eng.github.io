@@ -2677,3 +2677,308 @@ h3 {
 .k-ch {
   transition-duration: 0.18s;
 }
+
+/* ---------- revision 11: livery ---------- */
+
+/* racing blue, black, white; red is the heat */
+:root {
+  --ink: #0b0c0f;
+  --paper: #f2f3f5;
+  --paper-2: #e3e5ea;
+  --muted: #6b6f78;
+  --signal: #e4002b;
+  --cobalt: #1f3bff;
+  --sky: #9fb0ff;
+}
+
+/* on the blue block the accents are white and black, like a fairing */
+.s-cobalt {
+  --signal: #ffffff;
+}
+
+.s-cobalt .gait-nums p:first-child .numeral {
+  color: var(--paper);
+}
+
+.s-cobalt .gait-nums p:last-child .numeral {
+  color: var(--ink);
+}
+
+.s-cobalt .chart .mark.accent {
+  fill: var(--ink);
+}
+
+.s-cobalt .scrub input::-webkit-slider-thumb {
+  background: var(--ink);
+  border-color: var(--paper);
+}
+
+.s-cobalt .scrub input::-moz-range-thumb {
+  background: var(--ink);
+  border-color: var(--paper);
+}
+
+.s-cobalt .streams-st.fuse {
+  fill: var(--ink);
+}
+
+.s-cobalt .streams-big {
+  fill: var(--paper);
+}
+
+.s-cobalt .frame.is-on span {
+  color: var(--paper);
+}
+
+.fr-joint {
+  fill: var(--ink);
+  stroke: var(--paper);
+}
+
+.s-cobalt .sec-n,
+.s-cobalt .sub-head .mono {
+  color: var(--paper);
+}
+
+/* the red block: black and white type */
+.s-signal {
+  color: var(--ink);
+}
+
+.s-signal .ghost {
+  -webkit-text-stroke-color: var(--ink);
+}
+
+/* ---- the speed lean: big display type leans like a race number ---- */
+.name-1,
+.name-2,
+.talk-1,
+.talk-2,
+.numeral,
+.fraction,
+.sec-n,
+.ghost {
+  transform: skewX(-9deg);
+  transform-origin: left bottom;
+}
+
+/* the ink-rise animation must not undo the lean: it animates `translate` */
+@keyframes ink-rise {
+  from {
+    clip-path: inset(100% 0 0 0);
+    translate: 0 0.12em;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    translate: 0 0;
+  }
+}
+
+.name-1 {
+  margin-left: 0.04em;
+}
+
+/* ---- speed lines ---- */
+.hero-foot {
+  position: relative;
+  padding-top: 40px;
+}
+
+.hero-foot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
+  height: 14px;
+  background: repeating-linear-gradient(-62deg, transparent 0 11px, rgba(242, 243, 245, 0.28) 11px 12px);
+}
+
+/* a hairline speed band under each section head */
+.sec-head {
+  position: relative;
+}
+
+.sec-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -14px;
+  height: 8px;
+  background: repeating-linear-gradient(-62deg, transparent 0 9px, currentColor 9px 10px);
+  opacity: 0.22;
+}
+
+/* livery stripe at the top of the red block */
+.contact {
+  overflow: clip;
+}
+
+.contact::after {
+  content: '';
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 0;
+  height: 18px;
+  background: linear-gradient(90deg, var(--cobalt) 0 42%, var(--paper) 42% 58%, var(--ink) 58% 100%);
+  transform: skewX(-62deg);
+  transform-origin: left top;
+}
+
+/* hero: a blue light sweep behind the name */
+.hero {
+  background: radial-gradient(ellipse 55% 60% at 88% 45%, rgba(31, 59, 255, 0.42), transparent 70%), var(--ink);
+}
+
+/* ---- leaks ---- */
+
+/* numerals clear their captions */
+.numeral {
+  margin-top: 0;
+}
+
+.cap {
+  margin-top: 18px;
+}
+
+/* the pull quote's three lines no longer overlap */
+.pull {
+  line-height: 1;
+}
+
+.pull em {
+  font-size: 1em;
+  line-height: 1;
+}
+
+/* build names fit their column */
+.b-name {
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+  overflow-wrap: anywhere;
+}
+
+.builds li > a,
+.builds li > div {
+  grid-template-columns: minmax(220px, 300px) 1fr minmax(160px, 220px) 70px;
+}
+
+/* ghost numerals stay inside the page */
+.ghost {
+  right: var(--gutter);
+  top: 0.05em;
+  font-size: clamp(10rem, 30vh, 19rem);
+}
+
+/* phone layouts that the poster pass had overridden */
+@media (max-width: 900px) {
+  .purser-demo {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .builds li > a,
+  .builds li > div {
+    grid-template-columns: 1fr auto;
+    gap: 8px 16px;
+  }
+  .gait-nums .numeral {
+    margin-top: 0;
+  }
+  .gait-nums {
+    gap: 28px;
+  }
+  .b-name {
+    font-size: 1.5rem;
+  }
+  .ghost {
+    right: 8px;
+    font-size: 7rem;
+  }
+  .name-1 {
+    margin-left: 0.06em;
+  }
+}
+
+/* leak stragglers */
+.pull {
+  line-height: 1.08;
+  row-gap: 0.04em;
+}
+
+.cap {
+  margin-top: 28px;
+}
+
+@media (max-width: 700px) {
+  .numerals .numeral {
+    font-size: 26vw;
+  }
+  .gait-nums .numeral {
+    font-size: 19vw;
+  }
+  .fraction {
+    font-size: 17vw;
+  }
+}
+
+/* ---------- revision 12: lean the headings, settle the quote ---------- */
+
+/* headings and the pull quote lean with the numerals */
+h2,
+.pull,
+.sec-head {
+  transform: skewX(-9deg);
+  transform-origin: left bottom;
+}
+
+.sec-n,
+.ghost {
+  transform: skewX(-9deg);
+}
+
+/* the quote: three lines on a real grid, with the serif line given its own row */
+.pull {
+  display: grid;
+  grid-auto-rows: auto;
+  row-gap: 0.1em;
+  line-height: 1.06;
+}
+
+.pull > span,
+.pull > em {
+  display: block;
+  line-height: 1;
+}
+
+.pull em {
+  font-size: 0.98em;
+  line-height: 1.05;
+  padding: 0.04em 0;
+}
+
+/* phone: gait numerals inside the screen */
+@media (max-width: 700px) {
+  .gait-nums .numeral {
+    font-size: 17vw;
+  }
+  .gait-nums {
+    margin-left: 0;
+    padding-left: 0;
+  }
+  .cap {
+    max-width: 100%;
+  }
+}
+
+/* phones: the gait stage stacks (a later desktop rule had been winning) */
+@media (max-width: 900px) {
+  .gait-stage {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .gait-canvas {
+    margin-left: 0;
+    min-height: 340px;
+  }
+}
