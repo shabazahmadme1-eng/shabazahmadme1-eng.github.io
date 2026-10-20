@@ -2190,3 +2190,395 @@ html.js [data-reveal].is-in {
     }
   }
 }
+
+/* ---------- revision 7: poster pressure ---------- */
+
+/* thicker rules everywhere */
+.sec-rule,
+.numerals,
+.fractions,
+.tiles,
+.rigor,
+.record li,
+.builds li > a,
+.builds li > div,
+.builds li:last-child > *,
+.hero-foot,
+.frames-row {
+  border-width: 3px;
+}
+
+/* ---- hero: the name runs edge to edge, the second line rides up into the first ---- */
+.hero-wrap {
+  overflow: visible;
+}
+
+.hero-name {
+  margin: 0 calc(-1 * var(--gutter));
+  line-height: 0.74;
+  letter-spacing: -0.045em;
+}
+
+.name-1 .k-ch {
+  font-variation-settings: 'wdth' 118, 'wght' 780;
+}
+
+.name-2 .k-ch {
+  font-variation-settings: 'wdth' 100, 'wght' 700;
+}
+
+.name-1 {
+  font-size: clamp(4.6rem, min(22.4vw, 40vh), 26rem);
+  padding-left: var(--gutter);
+}
+
+.name-2 {
+  position: relative;
+  z-index: 1;
+  margin-top: -0.08em;
+  margin-left: 18vw;
+  font-size: clamp(2.6rem, min(10.4vw, 18vh), 12.4rem);
+  mix-blend-mode: normal;
+}
+
+/* ---- section heads: ghost numeral bleeding off the right, running head in the margin ---- */
+.sec {
+  position: relative;
+  overflow: clip;
+}
+
+.ghost {
+  position: absolute;
+  top: -0.08em;
+  right: -0.14em;
+  z-index: 0;
+  font-variation-settings: 'wdth' 125, 'wght' 900;
+  font-size: clamp(14rem, 44vh, 30rem);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 2px currentColor;
+  opacity: 0.22;
+  pointer-events: none;
+  user-select: none;
+}
+
+.s-paper .ghost {
+  -webkit-text-stroke-color: var(--ink);
+}
+
+.s-ink .ghost,
+.s-cobalt .ghost {
+  -webkit-text-stroke-color: var(--paper);
+}
+
+.s-signal .ghost {
+  -webkit-text-stroke-color: var(--ink);
+}
+
+.sec .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.run {
+  display: none;
+}
+
+@media (min-width: 1560px) {
+  .run {
+    display: block;
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    z-index: 1;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg) translateY(50%);
+    font: 700 13px var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+
+.sec-n {
+  font-size: clamp(4rem, 7vw, 7.2rem);
+}
+
+/* ---- headings: wide, heavy, tight ---- */
+h2 {
+  max-width: none;
+  font-variation-settings: 'wdth' 118, 'wght' 860;
+  font-size: clamp(2.6rem, 6.4vw, 6.6rem);
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+}
+
+.intro h2 {
+  grid-column: 1 / -1;
+}
+
+.intro > div {
+  grid-column: 6 / -1;
+}
+
+h3 {
+  font-variation-settings: 'wdth' 112, 'wght' 820;
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  letter-spacing: -0.035em;
+}
+
+/* ---- numerals: bigger, overlapping the rule above ---- */
+.numeral {
+  font-size: clamp(4.6rem, 11.6vw, 11.8rem);
+  margin-top: -0.12em;
+}
+
+.numerals p,
+.fractions p:not(.fine) {
+  padding-top: 34px;
+}
+
+.fraction {
+  font-size: clamp(3.2rem, 7.2vw, 7.4rem);
+}
+
+/* ---- purser demo: the phone leans into the terminal ---- */
+.purser-demo {
+  grid-template-columns: minmax(290px, 340px) 1fr;
+  gap: 0;
+}
+
+.phone {
+  z-index: 2;
+  margin-right: -44px;
+  transform: rotate(-5deg) translateY(10px);
+  box-shadow: 22px 26px 0 var(--signal);
+}
+
+.term {
+  border: 3px solid var(--ink);
+  margin-left: 0;
+  padding-left: 40px;
+}
+
+/* ---- pull quote: three lines, stepped ---- */
+.pull {
+  max-width: none;
+  display: grid;
+  font-size: clamp(2.8rem, 9vw, 9.4rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-variation-settings: 'wdth' 118, 'wght' 860;
+}
+
+.pull em {
+  display: block;
+  margin-left: 14%;
+  font-size: 1.12em;
+}
+
+.pull-last {
+  margin-left: 28%;
+}
+
+/* ---- tiles: pictograms big ---- */
+.picto {
+  width: 128px;
+  height: 128px;
+}
+
+.tiles strong {
+  font-size: 1.6rem;
+}
+
+/* ---- gait stage: the walker bleeds left, numerals ride the edge ---- */
+.gait-stage {
+  grid-template-columns: 1.5fr 1fr;
+  gap: 0;
+}
+
+.gait-canvas {
+  margin-left: calc(-1 * var(--gutter));
+  min-height: 560px;
+}
+
+.gait-nums {
+  position: relative;
+  z-index: 1;
+  margin-left: -8vw;
+}
+
+.gait-nums .numeral {
+  font-size: clamp(4.2rem, 10.5vw, 10.5rem);
+}
+
+/* ---- research specimens: visuals bleed to the edge ---- */
+.spec {
+  gap: clamp(28px, 4vw, 56px);
+  border-top-width: 3px;
+}
+
+.spec-visual {
+  margin-left: calc(-1 * var(--gutter));
+}
+
+.spec.flip .spec-visual {
+  margin-left: 0;
+  margin-right: calc(-1 * var(--gutter));
+}
+
+/* ---- record + builds: poster lists ---- */
+.rec-title {
+  font-variation-settings: 'wdth' 110, 'wght' 760;
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+}
+
+.b-name {
+  font-variation-settings: 'wdth' 125, 'wght' 900;
+  font-size: clamp(1.8rem, 3vw, 2.9rem);
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+
+.builds li > a,
+.builds li > div {
+  grid-template-columns: minmax(260px, 420px) 1fr minmax(160px, 220px) 70px;
+}
+
+/* ---- contact: LET'S / TALK stacked, bleeding ---- */
+.contact-big {
+  margin: 0 calc(-1 * var(--gutter)) 40px;
+  padding-left: var(--gutter);
+  line-height: 0.76;
+  letter-spacing: -0.05em;
+}
+
+.talk-1 .k-ch,
+.talk-2 .k-ch {
+  font-variation-settings: 'wdth' 118, 'wght' 800;
+}
+
+.talk-1 {
+  font-size: clamp(4.4rem, 24vw, 26rem);
+}
+
+.talk-2 {
+  font-size: clamp(4.4rem, 24vw, 26rem);
+  margin-left: 22vw;
+  color: var(--paper);
+}
+
+.contact-row {
+  font-size: 20px;
+}
+
+.copy-btn {
+  font-size: clamp(16px, 1.6vw, 20px);
+  padding: 18px 30px;
+}
+
+/* ---- small screens: keep the pressure, drop the overlaps ---- */
+@media (max-width: 900px) {
+  .ghost {
+    font-size: 9rem;
+    top: 0.1em;
+  }
+  .name-2 {
+    margin-left: 0;
+  }
+  .purser-demo {
+    gap: 12px;
+  }
+  .phone {
+    margin-right: 0;
+    transform: none;
+  }
+  .term {
+    padding-left: 0;
+  }
+  .gait-canvas {
+    margin-left: 0;
+    min-height: 340px;
+  }
+  .gait-nums {
+    margin-left: 0;
+  }
+  .spec-visual,
+  .spec.flip .spec-visual {
+    margin: 0;
+  }
+  .pull em,
+  .pull-last {
+    margin-left: 0;
+  }
+  .talk-2 {
+    margin-left: 0;
+  }
+}
+
+/* ---------- revision 8: measured type, cleaner collisions ---------- */
+
+/* measured lines: shrink-to-fit so the measurement is the text width */
+.name-1,
+.name-2,
+.talk-1,
+.talk-2 {
+  width: max-content;
+  max-width: none;
+}
+
+.name-1 {
+  padding-left: 0;
+  margin-left: 0.01em;
+}
+
+.name-2 {
+  margin-left: 19vw;
+}
+
+.talk-2 {
+  margin-left: 23vw;
+}
+
+.contact-big {
+  padding-left: 0;
+}
+
+/* the terminal's timestamps clear the phone */
+.term {
+  padding-left: 60px;
+}
+
+/* the numbers sit on a solid plate over the walker's edge */
+.gait-nums {
+  margin-left: -7vw;
+  padding: 24px 0 24px 32px;
+  background: var(--cobalt);
+}
+
+/* the ruler's first tick is inside the screen when the canvas bleeds left */
+@media (min-width: 901px) {
+  .scrub {
+    left: var(--gutter);
+  }
+}
+
+@media (max-width: 900px) {
+  .gait-nums {
+    margin-left: 0;
+    padding: 0;
+    background: transparent;
+  }
+  .name-2,
+  .talk-2 {
+    margin-left: 0;
+  }
+}
+
+/* ghost numerals sit quieter on dark blocks */
+.s-ink .ghost,
+.s-cobalt .ghost {
+  opacity: 0.13;
+}

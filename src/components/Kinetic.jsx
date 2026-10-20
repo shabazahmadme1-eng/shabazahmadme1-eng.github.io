@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 // Letters near the pointer swell in width and weight on Archivo's variable axes.
-export default function Kinetic({ text, className = '', radius = 150 }) {
+export default function Kinetic({ text, className = '', radius = 150, wdth = [75, 125], wght = [560, 900] }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function Kinetic({ text, className = '', radius = 150 }) {
         const r = rects[i]
         const d = Math.hypot(r.left + r.width / 2 - px, r.top + r.height / 2 - py)
         const k = Math.exp(-(d * d) / (2 * radius * radius))
-        c.style.fontVariationSettings = `"wdth" ${Math.round(75 + 50 * k)}, "wght" ${Math.round(560 + 340 * k)}`
+        c.style.fontVariationSettings = `"wdth" ${Math.round(wdth[0] + (wdth[1] - wdth[0]) * k)}, "wght" ${Math.round(wght[0] + (wght[1] - wght[0]) * k)}`
       })
     }
     function schedule() {
@@ -62,7 +62,7 @@ export default function Kinetic({ text, className = '', radius = 150 }) {
       window.removeEventListener('gaze', gaze)
       document.removeEventListener('mouseleave', leave)
     }
-  }, [radius])
+  }, [radius, wdth[0], wdth[1], wght[0], wght[1]])
 
   return (
     <span ref={ref} className={`k ${className}`}>

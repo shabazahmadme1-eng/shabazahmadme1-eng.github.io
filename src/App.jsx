@@ -20,6 +20,7 @@ const NAV = [
   ['Purser', '#purser'],
   ['Gait', '#gait'],
   ['Research', '#lab'],
+  ['Record', '#record'],
   ['Builds', '#builds'],
   ['Contact', '#contact'],
 ]
@@ -38,6 +39,56 @@ function useReveal() {
     )
     document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el))
     return () => io.disconnect()
+  }, [])
+}
+
+// Sizes lines of display type to fill a fraction of the viewport width,
+// capped by a fraction of its height. Measured, so the name always reads.
+function useFit(ref, lines) {
+  useEffect(() => {
+    const el = ref.current
+    let raf = 0
+    function fit() {
+      raf = 0
+      for (const [sel, frac, maxVh] of lines) {
+        const t = el.querySelector(sel)
+        if (!t) continue
+        // measure at the widest the letters can swell to, so the line never clips
+        const chars = [...t.querySelectorAll('.k-ch')]
+        const saved = chars.map((c) => c.style.fontVariationSettings)
+        // the letters animate their axes, so the measurement must bypass the transition
+        chars.forEach((c) => {
+          c.style.transition = 'none'
+          c.style.fontVariationSettings = '"wdth" 125, "wght" 900'
+        })
+        t.style.fontSize = '100px'
+        void t.offsetWidth
+        const w = t.getBoundingClientRect().width || 1
+        chars.forEach((c, i) => {
+          c.style.fontVariationSettings = saved[i]
+          void c.offsetWidth
+          c.style.transition = ''
+        })
+        t.style.fontSize = `${Math.min((100 * window.innerWidth * frac) / w, (window.innerHeight * maxVh) / 100)}px`
+      }
+    }
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(fit)
+    }
+    fit()
+    // the display face may still be loading; re-fit whenever fonts settle
+    const fonts = document.fonts
+    fonts?.load('900 100px Archivo').then(fit, () => {})
+    fonts?.ready.then(fit)
+    fonts?.addEventListener('loadingdone', on)
+    const late = setTimeout(fit, 1500)
+    window.addEventListener('resize', on)
+    return () => {
+      cancelAnimationFrame(raf)
+      clearTimeout(late)
+      fonts?.removeEventListener('loadingdone', on)
+      window.removeEventListener('resize', on)
+    }
   }, [])
 }
 
@@ -145,16 +196,28 @@ function Clock() {
 
 function SecHead({ n, name }) {
   return (
-    <div className="sec-head" data-reveal>
-      <span className="sec-n">{n}</span>
-      <span className="sec-name">{name}</span>
-      <i className="sec-rule" aria-hidden="true" />
-    </div>
+    <>
+      <span className="ghost" aria-hidden="true">
+        {n}
+      </span>
+      <span className="run" aria-hidden="true">
+        {n} — {name}
+      </span>
+      <div className="sec-head" data-reveal>
+        <span className="sec-n">{n}</span>
+        <span className="sec-name">{name}</span>
+        <i className="sec-rule" aria-hidden="true" />
+      </div>
+    </>
   )
 }
 
 function Hero() {
   const nameRef = useRef(null)
+  useFit(nameRef, [
+    ['.name-1', 1, 42],
+    ['.name-2', 0.79, 20],
+  ])
   return (
     <section className="hero s-ink" id="top" data-coords>
       <GazeField nameRef={nameRef} />
@@ -173,8 +236,8 @@ function Hero() {
       </div>
       <div className="wrap hero-wrap">
         <h1 className="hero-name" ref={nameRef}>
-          <Kinetic text="SHABAZ" className="name-1" />
-          <Kinetic text="AHMAD HASIB" className="name-2" />
+          <Kinetic text="SHABAZ" className="name-1" wdth={[118, 125]} wght={[780, 900]} radius={220} />
+          <Kinetic text="AHMAD HASIB" className="name-2" wdth={[100, 125]} wght={[700, 900]} radius={180} />
         </h1>
         <div className="hero-foot">
           <p className="hero-line">
@@ -239,7 +302,9 @@ function Purser() {
         </div>
 
         <blockquote className="pull" data-reveal>
-          The model reads. <em>Code decides, and writes the facts.</em>
+          <span>The model reads.</span>
+          <em>Code decides,</em>
+          <span className="pull-last">and writes the facts.</span>
         </blockquote>
 
         <div className="fractions" data-reveal>
@@ -548,6 +613,11 @@ function Builds() {
 
 function Contact() {
   const [copied, setCopied] = useState(false)
+  const bigRef = useRef(null)
+  useFit(bigRef, [
+    ['.talk-1', 0.74, 40],
+    ['.talk-2', 0.75, 40],
+  ])
   async function copy() {
     try {
       await navigator.clipboard.writeText(LINKS.email)
@@ -561,8 +631,9 @@ function Contact() {
     <section id="contact" className="sec s-signal contact">
       <div className="wrap">
         <SecHead n="06" name="Contact" />
-        <a className="contact-big" href={`mailto:${LINKS.email}`} data-cursor="email">
-          <Kinetic text="LET'S TALK" radius={190} />
+        <a className="contact-big" href={`mailto:${LINKS.email}`} data-cursor="email" ref={bigRef}>
+          <Kinetic text="LET'S" className="talk-1" wdth={[118, 125]} wght={[800, 900]} radius={220} />
+          <Kinetic text="TALK" className="talk-2" wdth={[118, 125]} wght={[800, 900]} radius={220} />
         </a>
         <div className="contact-row">
           <button type="button" className="copy-btn" onClick={copy} data-cursor="copy">
