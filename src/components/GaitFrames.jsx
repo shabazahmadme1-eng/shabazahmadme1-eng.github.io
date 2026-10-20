@@ -19,7 +19,7 @@ function Bones({ p, side, far }) {
 
 // What the model reads: a clip is 150 frames of a 25-joint skeleton. Eight
 // evenly spaced frames of the same walk cycle, drawn as small multiples.
-export default function GaitFrames() {
+export default function GaitFrames({ current, onPick }) {
   const frames = Array.from({ length: FRAMES }, (_, i) => ({
     f: Math.round((i / FRAMES) * CLIP),
     p: buildPose(1.05 + (i / FRAMES) * Math.PI * 2),
@@ -29,7 +29,14 @@ export default function GaitFrames() {
     <figure className="frames">
       <div className="frames-row">
         {frames.map(({ f, p }) => (
-          <div className="frame" key={f}>
+          <button
+            type="button"
+            className={`frame${current != null && Math.abs(current - f) < CLIP / FRAMES / 2 ? ' is-on' : ''}`}
+            key={f}
+            onClick={() => onPick && onPick(f)}
+            data-cursor="pose"
+            aria-label={`Show frame ${f} on the walking figure`}
+          >
             <svg viewBox="188 158 150 186" role="img" aria-label={`skeleton at frame ${f}`}>
               <line x1={188} x2={338} y1={331} y2={331} className="fr-ground" />
               <Bones p={p} side="R" far />
@@ -41,12 +48,12 @@ export default function GaitFrames() {
               ))}
             </svg>
             <span>f{String(f).padStart(3, '0')}</span>
-          </div>
+          </button>
         ))}
       </div>
       <figcaption>
         Every clip is 150 frames × 25 joints. Eight frames of one cycle shown; the model sees all of them, as
-        joints and as bones.
+        joints and as bones. Click a frame to pose the figure above.
       </figcaption>
     </figure>
   )

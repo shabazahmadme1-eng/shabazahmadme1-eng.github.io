@@ -110,6 +110,11 @@ export default function GazeField({ nameRef, onStats }) {
           state.cur = { x: s.x, y: s.y, start: now, n: 1, sx: s.x, sy: s.y }
         }
       }
+      if (now - (state.gazeAt || 0) > 90) {
+        state.gazeAt = now
+        const r = ctx.canvas.getBoundingClientRect()
+        window.dispatchEvent(new CustomEvent('gaze', { detail: { x: r.left + s.x, y: r.top + s.y } }))
+      }
       if (s.phase === 'fix' && now >= s.until) {
         finalize(now)
         s.phase = 'pick'

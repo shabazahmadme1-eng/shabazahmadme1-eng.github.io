@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useCanvas, MONO, C, RGB } from '../lib/useCanvas'
 
 const VW = 560
@@ -9,6 +10,8 @@ const GROUND_Y = 330
 const TRACE_TOP = 372
 const TRACE_BOT = 452
 const CYCLE_S = 1.15
+const CLIP = 150 // frames per clip, as in the dataset
+const HOLD_MS = 2600 // how long a scrubbed pose holds before the walk resumes
 const D2R = Math.PI / 180
 const P = (a) => `rgba(${RGB.paper},${a})`
 
@@ -80,8 +83,13 @@ function dot(ctx, j, r, fill, ring) {
 
 // The gait study as a flat, poster-style figure on cobalt: a skeletal walk
 // cycle with multi-scale graph edges (the MS-G3D idea) and a joint-angle trace.
-export default function Walker() {
-  const ref = useCanvas((ctx, { w, h, dt, t, state }) => {
+export default function Walker({ frame, onFrame }) {
+  const scrub = useRef({ frame: null, at: -1e9 })
+  useEffect(() => {
+    if (frame != null) scrub.current = { frame, at: performance.now() }
+  }, [frame])
+
+  const ref = useCanvas((ctx, { w, h, dt, t, now, state }) => {
     if (state.phi == null) {
       state.phi = 1.05
       state.ghosts = []
@@ -89,8 +97,18 @@ export default function Walker() {
       state.flash = -10
       state.last = -10
     }
-    state.phi += dt * ((Math.PI * 2) / CYCLE_S)
+    // a scrubbed frame pins the pose for a moment, then the walk carries on from there
+    const sc = scrub.current
+    const held = sc.frame != null && now - sc.at < HOLD_MS
+    if (held) state.phi = 1.05 + (sc.frame / CLIP) * Math.PI * 2
+    else state.phi += dt * ((Math.PI * 2) / CYCLE_S)
     const phi = state.phi
+    const cyc = (((phi - 1.05) / (Math.PI * 2)) % 1 + 1) % 1
+    const frameNo = Math.round(cyc * CLIP) % CLIP
+    if (onFrame && frameNo !== state.lastFrame) {
+      state.lastFrame = frameNo
+      onFrame(frameNo, held)
+    }
     const s = Math.min(w / VWV, h / VH)
     ctx.clearRect(0, 0, w, h)
     ctx.save()

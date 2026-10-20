@@ -8,7 +8,7 @@ export default function Kinetic({ text, className = '', radius = 150 }) {
     const el = ref.current
     const fine = window.matchMedia('(pointer: fine)').matches
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (!fine || reduced) return
+    if (reduced) return
 
     const chars = [...el.querySelectorAll('.k-ch')]
     let px = -1e4
@@ -39,18 +39,27 @@ export default function Kinetic({ text, className = '', radius = 150 }) {
       px = py = -1e4
       schedule()
     }
+    // the hero's simulated viewer looks at the name; the letters it looks at swell
+    function gaze(e) {
+      if (!inView) return
+      px = e.detail.x
+      py = e.detail.y
+      schedule()
+    }
 
     const io = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting
       if (!inView) leave()
     })
     io.observe(el)
-    window.addEventListener('pointermove', move, { passive: true })
+    if (fine) window.addEventListener('pointermove', move, { passive: true })
+    window.addEventListener('gaze', gaze)
     document.addEventListener('mouseleave', leave)
     return () => {
       cancelAnimationFrame(raf)
       io.disconnect()
       window.removeEventListener('pointermove', move)
+      window.removeEventListener('gaze', gaze)
       document.removeEventListener('mouseleave', leave)
     }
   }, [radius])

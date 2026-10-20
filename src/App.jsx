@@ -43,6 +43,7 @@ function useReveal() {
 
 function Progress() {
   const ref = useRef(null)
+  const [ticks, setTicks] = useState([])
   useEffect(() => {
     let raf = 0
     function update() {
@@ -53,39 +54,74 @@ function Progress() {
     const on = () => {
       if (!raf) raf = requestAnimationFrame(update)
     }
-    update()
+    // one tick per section on the bar
+    function measure() {
+      const d = document.documentElement
+      const range = Math.max(1, d.scrollHeight - d.clientHeight)
+      setTicks(NAV.map(([, href]) => Math.min(1, document.querySelector(href).offsetTop / range)))
+      update()
+    }
+    measure()
+    const t = setTimeout(measure, 1500)
     window.addEventListener('scroll', on, { passive: true })
-    window.addEventListener('resize', on)
+    window.addEventListener('resize', measure)
     return () => {
       cancelAnimationFrame(raf)
+      clearTimeout(t)
       window.removeEventListener('scroll', on)
-      window.removeEventListener('resize', on)
+      window.removeEventListener('resize', measure)
     }
   }, [])
   return (
     <div className="progress" aria-hidden="true">
       <span ref={ref} />
+      {ticks.map((p, i) => (
+        <i key={i} style={{ left: `${p * 100}%` }} />
+      ))}
     </div>
   )
 }
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false)
+  const [now, setNow] = useState(-1)
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 40)
-    on()
+    const sections = NAV.map(([, href]) => document.querySelector(href))
+    let raf = 0
+    function update() {
+      raf = 0
+      setScrolled(window.scrollY > 40)
+      // the current section: the last one whose top has passed the nav
+      let idx = -1
+      sections.forEach((s, i) => {
+        if (s.getBoundingClientRect().top <= 120) idx = i
+      })
+      setNow(idx)
+    }
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    update()
     window.addEventListener('scroll', on, { passive: true })
-    return () => window.removeEventListener('scroll', on)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', on)
+    }
   }, [])
   return (
     <nav className={`nav${scrolled ? ' is-scrolled' : ''}`} aria-label="Primary">
       <a className="logo" href="#top" aria-label="Shabaz Ahmad Hasib, home">
         Shabaz Ahmad Hasib
       </a>
+      <p className={`nav-now${now >= 0 ? ' is-on' : ''}`}>
+        <b>{String(now + 1).padStart(2, '0')}</b> {now >= 0 ? NAV[now][0] : ''}
+      </p>
       <ul className="nav-links">
-        {NAV.map(([label, href]) => (
+        {NAV.map(([label, href], i) => (
           <li key={href}>
-            <a href={href}>{label}</a>
+            <a href={href} className={i === now ? 'is-now' : ''}>
+              {label}
+            </a>
           </li>
         ))}
       </ul>
@@ -242,6 +278,13 @@ function Purser() {
 }
 
 function Gait() {
+  const [pick, setPick] = useState(null) // the frame the reader chose
+  const [frame, setFrame] = useState(0) // the frame the figure is on
+  const [held, setHeld] = useState(false)
+  const onFrame = (f, h) => {
+    setFrame(f)
+    setHeld(h)
+  }
   return (
     <section id="gait" className="sec s-cobalt">
       <div className="wrap">
@@ -261,7 +304,28 @@ function Gait() {
 
         <div className="gait-stage" data-reveal>
           <div className="gait-canvas">
-            <Walker />
+            <Walker frame={pick} onFrame={onFrame} />
+            <span className="gait-frame-no">
+              f{String(frame).padStart(3, '0')} <i>/ 150{held ? ' · held' : ''}</i>
+            </span>
+            <label className="scrub">
+              <span className="sr-only">Scrub the walk cycle by frame</span>
+              <input
+                type="range"
+                min="0"
+                max="149"
+                value={frame}
+                onChange={(e) => setPick(Number(e.target.value))}
+                data-cursor="scrub"
+              />
+              <span className="scrub-ticks" aria-hidden="true">
+                {[0, 30, 60, 90, 120, 149].map((f) => (
+                  <i key={f} style={{ left: `${(f / 149) * 100}%` }}>
+                    f{String(f).padStart(3, '0')}
+                  </i>
+                ))}
+              </span>
+            </label>
           </div>
           <div className="gait-nums">
             <p>
@@ -277,7 +341,7 @@ function Gait() {
 
         <div className="block" data-reveal>
           <h3>What the model sees</h3>
-          <GaitFrames />
+          <GaitFrames current={frame} onPick={setPick} />
         </div>
 
         <div className="block" data-reveal>
