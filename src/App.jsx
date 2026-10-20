@@ -237,7 +237,7 @@ function Hero() {
       <div className="wrap hero-wrap">
         <h1 className="hero-name" ref={nameRef}>
           <Kinetic text="SHABAZ" className="name-1" wdth={[118, 125]} wght={[780, 900]} radius={220} />
-          <Kinetic text="AHMAD HASIB" className="name-2" wdth={[100, 125]} wght={[700, 900]} radius={180} />
+          <Kinetic text="AHMAD HASIB" className="name-2" wdth={[100, 125]} wght={[700, 900]} radius={180} gaze />
         </h1>
         <div className="hero-foot">
           <p className="hero-line">
@@ -344,11 +344,17 @@ function Purser() {
 
 function Gait() {
   const [pick, setPick] = useState(null) // the frame the reader chose
-  const [frame, setFrame] = useState(0) // the frame the figure is on
-  const [held, setHeld] = useState(false)
+  const [bucket, setBucket] = useState(0) // which filmstrip frame is nearest
+  const counter = useRef(null)
+  const ruler = useRef(null)
+  const dragging = useRef(false)
+  // ~130 frame changes a second: update the DOM directly, re-render React only
+  // when the highlighted filmstrip frame changes
   const onFrame = (f, h) => {
-    setFrame(f)
-    setHeld(h)
+    if (counter.current) counter.current.textContent = `f${String(f).padStart(3, '0')} / 150${h ? ' · held' : ''}`
+    if (ruler.current && !dragging.current) ruler.current.value = f
+    const b = Math.round(f / (150 / 8)) % 8
+    setBucket((prev) => (prev === b ? prev : b))
   }
   return (
     <section id="gait" className="sec s-cobalt">
@@ -370,16 +376,19 @@ function Gait() {
         <div className="gait-stage" data-reveal>
           <div className="gait-canvas">
             <Walker frame={pick} onFrame={onFrame} />
-            <span className="gait-frame-no">
-              f{String(frame).padStart(3, '0')} <i>/ 150{held ? ' · held' : ''}</i>
+            <span className="gait-frame-no" ref={counter}>
+              f000 / 150
             </span>
             <label className="scrub">
               <span className="sr-only">Scrub the walk cycle by frame</span>
               <input
+                ref={ruler}
                 type="range"
                 min="0"
                 max="149"
-                value={frame}
+                defaultValue="0"
+                onPointerDown={() => (dragging.current = true)}
+                onPointerUp={() => (dragging.current = false)}
                 onChange={(e) => setPick(Number(e.target.value))}
                 data-cursor="scrub"
               />
@@ -406,7 +415,7 @@ function Gait() {
 
         <div className="block" data-reveal>
           <h3>What the model sees</h3>
-          <GaitFrames current={frame} onPick={setPick} />
+          <GaitFrames current={bucket} onPick={setPick} />
         </div>
 
         <div className="block" data-reveal>

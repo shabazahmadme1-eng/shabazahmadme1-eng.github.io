@@ -28,10 +28,10 @@ export default function GaitFrames({ current, onPick }) {
   return (
     <figure className="frames">
       <div className="frames-row">
-        {frames.map(({ f, p }) => (
+        {frames.map(({ f, p }, i) => (
           <button
             type="button"
-            className={`frame${current != null && Math.abs(current - f) < CLIP / FRAMES / 2 ? ' is-on' : ''}`}
+            className={`frame${current === i ? ' is-on' : ''}`}
             key={f}
             onClick={() => onPick && onPick(f)}
             data-cursor="pose"

@@ -51,10 +51,14 @@ export default function PrStrip() {
           <text x={2} y={H - 8} className="strip-tick">
             Aug
           </text>
+          <g className="strip-g-mine">
+            {PR_DAYS.map(([m], i) => m > 0 && <rect key={i} x={x(i)} y={BASE - (m / MAX) * UP} width={bw} height={(m / MAX) * UP} className="strip-mine" />)}
+          </g>
+          <g className="strip-g-other">
+            {PR_DAYS.map(([, o], i) => o > 0 && <rect key={i} x={x(i)} y={BASE + 3} width={bw} height={(o / MAX) * DOWN} className="strip-other" />)}
+          </g>
           {PR_DAYS.map(([m, o], i) => (
             <g key={i}>
-              {m > 0 && <rect x={x(i)} y={BASE - (m / MAX) * UP} width={bw} height={(m / MAX) * UP} className="strip-mine" />}
-              {o > 0 && <rect x={x(i)} y={BASE + 3} width={bw} height={(o / MAX) * DOWN} className="strip-other" />}
               <rect
                 x={x(i)}
                 y={0}

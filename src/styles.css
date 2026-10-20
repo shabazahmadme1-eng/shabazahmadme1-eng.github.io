@@ -2582,3 +2582,98 @@ h3 {
 .s-cobalt .ghost {
   opacity: 0.13;
 }
+
+/* ---------- revision 9: paint budget ---------- */
+
+/* the cursor blends per element, not as a full-viewport layer */
+.xh-blend {
+  mix-blend-mode: normal;
+}
+
+.xh-cross,
+.xh-line,
+.xh-box {
+  mix-blend-mode: difference;
+}
+
+/* big static paint goes on its own layer, rasterised once */
+.ghost {
+  will-change: transform;
+  contain: layout paint;
+}
+
+/* scroll-driven pieces: promote so the compositor drives them */
+@supports (animation-timeline: view()) {
+  .sec::before,
+  .numeral,
+  .fraction,
+  .sec-n {
+    will-change: clip-path, transform;
+  }
+
+  /* the strip animates as two groups, not per bar */
+  .strip-mine,
+  .strip-other {
+    animation: none;
+    transform: none;
+  }
+
+  .strip-g-mine,
+  .strip-g-other {
+    transform-box: fill-box;
+    animation: grow linear both;
+    animation-timeline: view();
+    animation-range: entry 0px entry 48vh;
+  }
+
+  .strip-g-mine {
+    transform-origin: bottom;
+  }
+
+  .strip-g-other {
+    transform-origin: top;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strip-g-mine,
+    .strip-g-other {
+      animation: none;
+    }
+  }
+}
+
+/* huge glyphs: a shorter swell so re-shaping settles sooner */
+.name-1 .k-ch,
+.name-2 .k-ch,
+.talk-1 .k-ch,
+.talk-2 .k-ch {
+  transition-duration: 0.22s;
+}
+
+/* ---------- revision 10: cheaper ghosts ---------- */
+
+/* a thinner, smaller outline is far cheaper to rasterise; its own layer means
+   it is painted once and only moved while scrolling */
+.ghost {
+  font-size: clamp(11rem, 34vh, 22rem);
+  -webkit-text-stroke-width: 1.5px;
+  contain: none;
+  will-change: transform;
+  opacity: 0.18;
+}
+
+.s-ink .ghost,
+.s-cobalt .ghost {
+  opacity: 0.11;
+}
+
+@media (max-width: 900px) {
+  .ghost {
+    font-size: 8rem;
+  }
+}
+
+/* the swell settles quickly, so giant glyphs are re-shaped for fewer frames */
+.k-ch {
+  transition-duration: 0.18s;
+}

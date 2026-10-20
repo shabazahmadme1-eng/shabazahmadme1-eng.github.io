@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 // Letters near the pointer swell in width and weight on Archivo's variable axes.
-export default function Kinetic({ text, className = '', radius = 150, wdth = [75, 125], wght = [560, 900] }) {
+export default function Kinetic({ text, className = '', radius = 150, wdth = [75, 125], wght = [560, 900], gaze: gazeOn = false }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -16,14 +16,20 @@ export default function Kinetic({ text, className = '', radius = 150, wdth = [75
     let raf = 0
     let inView = false
 
+    const last = new Array(chars.length).fill('')
     function apply() {
       raf = 0
       const rects = chars.map((c) => c.getBoundingClientRect())
       chars.forEach((c, i) => {
         const r = rects[i]
         const d = Math.hypot(r.left + r.width / 2 - px, r.top + r.height / 2 - py)
-        const k = Math.exp(-(d * d) / (2 * radius * radius))
-        c.style.fontVariationSettings = `"wdth" ${Math.round(wdth[0] + (wdth[1] - wdth[0]) * k)}, "wght" ${Math.round(wght[0] + (wght[1] - wght[0]) * k)}`
+        const k = d > radius * 3 ? 0 : Math.exp(-(d * d) / (2 * radius * radius))
+        const v = k === 0 ? '' : `"wdth" ${Math.round(wdth[0] + (wdth[1] - wdth[0]) * k)}, "wght" ${Math.round(wght[0] + (wght[1] - wght[0]) * k)}`
+        // writing the same value still invalidates layout; skip unchanged letters
+        if (v !== last[i]) {
+          last[i] = v
+          c.style.fontVariationSettings = v
+        }
       })
     }
     function schedule() {
@@ -53,7 +59,7 @@ export default function Kinetic({ text, className = '', radius = 150, wdth = [75
     })
     io.observe(el)
     if (fine) window.addEventListener('pointermove', move, { passive: true })
-    window.addEventListener('gaze', gaze)
+    if (gazeOn) window.addEventListener('gaze', gaze)
     document.addEventListener('mouseleave', leave)
     return () => {
       cancelAnimationFrame(raf)
