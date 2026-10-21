@@ -10,7 +10,7 @@ export const LINKS = {
   resqboxRepo: 'https://github.com/shabazahmadme1-eng/resqbox-submission',
   wobbleRepo: 'https://github.com/shabazahmadme1-eng/wobblewalk',
   dealRepo: 'https://github.com/shabazahmadme1-eng/deal-intelligence-agent',
-  neuroSite: 'https://neuroparadigm.in',
+  neuroSite: 'https://neurowebsite.sireesha-puppala.workers.dev',
 }
 
 export const PURSER_STACK =
