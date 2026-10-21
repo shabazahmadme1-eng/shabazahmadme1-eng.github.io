@@ -46,12 +46,6 @@ export const RECORD = [
 
 export const BUILDS = [
   {
-    name: 'QuantCrate',
-    text: 'An NSE research terminal with ML written from scratch. Its honest result: no model beat plain value, and a pre-registered paper-trading ledger runs until 2028.',
-    tags: 'Node.js · Python · React',
-    link: null,
-  },
-  {
     name: 'ResQbox',
     text: 'A marketplace backend where fifteen buyers racing for three units produce exactly three wins and twelve 409s. 73 tests.',
     tags: 'TypeScript · Fastify · SQLite',

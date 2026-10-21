@@ -84,7 +84,7 @@ export function useScrollLean() {
   }, [])
 }
 
-const ITEMS = ['224 merged PRs', '93.3% accuracy', '0.979 AUC', '110/110 routed right', '102/102 food orders', '2 patents filed', '2 papers submitted', '10 weeks to pilot']
+const ITEMS = ['224 merged PRs', '93.3% accuracy', '0.979 AUC', '110/110 routed right', '14 years of NSE data', '2 patents filed', '2 papers submitted', '10 weeks to pilot']
 
 // Pit-board results strip.
 export function Board() {

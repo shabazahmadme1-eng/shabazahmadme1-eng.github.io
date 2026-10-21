@@ -14,12 +14,14 @@ import Scanpath from './components/Scanpath.jsx'
 import Runway from './components/Runway.jsx'
 import Helix from './components/Helix.jsx'
 import { Intro, Board, useScrollLean } from './components/Wild.jsx'
+import { QuantCharts, PREREG } from './components/Quant.jsx'
 import { LINKS, PURSER_STACK, RECORD, BUILDS, STACK } from './data.js'
 import { PURSER_CHECKS, PURSER_PROBLEMS, GAIT_RIGOR } from './content.js'
 
 const NAV = [
   ['Purser', '#purser'],
   ['Gait', '#gait'],
+  ['Quant', '#quant'],
   ['Research', '#lab'],
   ['Record', '#record'],
   ['Builds', '#builds'],
@@ -481,11 +483,108 @@ function Specimen({ visual, note, kicker, title, children, nums, link, tone }) {
   )
 }
 
+function Quant() {
+  return (
+    <section id="quant" className="sec s-ink">
+      <div className="wrap">
+        <SecHead n="03" name="QuantCrate" />
+        <div className="intro" data-reveal>
+          <h2>Fourteen years of data. One honest answer.</h2>
+          <div>
+            <p className="lede">
+              An NSE stock-research terminal with a quant research sidecar, built to measure where the edge is and
+              where it isn’t. Value is the only factor that holds up, and only in certain markets. No machine-learning
+              model beat it. The site says so instead of hiding it.
+            </p>
+            <p className="byline">Solo, 2026. Private repo: about 9,000 lines of Node, Python and React, 32 API routes.</p>
+          </div>
+        </div>
+
+        <div className="numerals" data-reveal>
+          <p>
+            <span className="numeral">+0.028</span>
+            <span className="cap">value IC over 14 years. t = 1.67, not significant</span>
+          </p>
+          <p>
+            <span className="numeral">6/14</span>
+            <span className="cap">years in which value’s IC was negative</span>
+          </p>
+          <p>
+            <span className="numeral">0/5</span>
+            <span className="cap">ML models that beat the single factor</span>
+          </p>
+        </div>
+
+        <div data-reveal>
+          <QuantCharts />
+        </div>
+
+        <div className="prereg" data-reveal>
+          <div className="prereg-plate">
+            <dl>
+              {PREREG.map(([k, v]) => (
+                <div key={k} style={{ display: 'contents' }}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div className="prereg-side">
+            <h3>The live test, written down before it started</h3>
+            <p className="body">
+              A GitHub Action records the book every Friday after the close and commits the ledger to the repo, so the
+              track record cannot be re-interpreted later. The backtest for this exact configuration says +12.6% a
+              year over the index, Sharpe 1.56. After correcting for the eight configurations tried before it, the
+              out-of-sample t-statistic is 2.1, p ≈ 0.13. That is not significant, and the page says so.
+            </p>
+            <p className="prereg-verdict">
+              No verdict before 2028‑Q2.
+              <small>Primary test started 23 October 2026. First closed cohorts: January 2027.</small>
+            </p>
+          </div>
+        </div>
+
+        <div className="q-eng" data-reveal>
+          <div>
+            <strong>3 models</strong>
+            <p>
+              Logistic regression, an MLP and gradient-boosted trees written from scratch in JavaScript, validated on
+              126,727 rows. AUCs of 0.563, 0.475 and 0.501, so an honesty layer calibrates the first and gives the
+              coin-flip two <code>weight = 0</code>.
+            </p>
+          </div>
+          <div>
+            <strong>26 asserts</strong>
+            <p>
+              On the causal joins alone. Fundamentals enter 60 days after the period ends; one off-by-one would turn
+              every backtest into lookahead fiction, so that code is the most tested in the repo.
+            </p>
+          </div>
+          <div>
+            <strong>5 regimes</strong>
+            <p>
+              Labelled from trailing data only, never forward. Delisted names kept in a point-in-time universe
+              (survivor premium measured at 0.1% a year), capacity priced with a square-root impact model.
+            </p>
+          </div>
+        </div>
+
+        <p className="stackline" data-reveal>
+          Node.js, Express, React, Python, pandas, alphalens, LightGBM, scikit-learn, SQLite, GitHub Actions. jugaad-data
+          and yfinance for NSE prices; a 12-year fundamentals database built from Kaggle, Finology and screener.in.
+          Research and decision support, never advice.
+        </p>
+      </div>
+    </section>
+  )
+}
+
 function Lab() {
   return (
     <section id="lab" className="sec s-paper">
       <div className="wrap">
-        <SecHead n="03" name="More research" />
+        <SecHead n="04" name="More research" />
         <Specimen
           visual={<Scanpath />}
           note="simulated scanpath, not study data"
@@ -541,7 +640,7 @@ function Record() {
   return (
     <section id="record" className="sec s-ink">
       <div className="wrap">
-        <SecHead n="04" name="Patents and papers" />
+        <SecHead n="05" name="Patents and papers" />
         <ol className="record" data-reveal>
           {RECORD.map((r) => (
             <li key={r.title}>
@@ -563,7 +662,7 @@ function Builds() {
   return (
     <section id="builds" className="sec s-paper">
       <div className="wrap">
-        <SecHead n="05" name="Builds" />
+        <SecHead n="06" name="Builds" />
         <figure className="shot" data-reveal>
           <div className="shot-frame">
             <div className="shot-bar" aria-hidden="true">
@@ -640,7 +739,7 @@ function Contact() {
   return (
     <section id="contact" className="sec s-signal contact">
       <div className="wrap">
-        <SecHead n="06" name="Contact" />
+        <SecHead n="07" name="Contact" />
         <a className="contact-big" href={`mailto:${LINKS.email}`} data-cursor="email" ref={bigRef}>
           <Kinetic text="LET'S" className="talk-1" wdth={[118, 125]} wght={[800, 900]} radius={220} />
           <Kinetic text="TALK" className="talk-2" wdth={[118, 125]} wght={[800, 900]} radius={220} />
@@ -679,6 +778,7 @@ export default function App() {
         <Purser />
         <Board />
         <Gait />
+        <Quant />
         <Lab />
         <Record />
         <Builds />
