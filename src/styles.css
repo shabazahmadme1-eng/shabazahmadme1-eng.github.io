@@ -3544,3 +3544,30 @@ h2,
 .fraction {
   margin-bottom: 0.32em;
 }
+
+/* the ink-rise must not crop the lean's horizontal overhang */
+@keyframes ink-rise {
+  from {
+    clip-path: inset(100% -0.4em 0 -0.4em);
+    translate: 0 0.12em;
+  }
+  to {
+    clip-path: inset(0 -0.4em 0 -0.4em);
+    translate: 0 0;
+  }
+}
+
+/* numerals sized to a three-column grid with the lean */
+.numeral {
+  font-size: clamp(4.2rem, 9.4vw, 9.8rem);
+}
+
+.gait-nums .numeral {
+  font-size: clamp(3.8rem, 8.5vw, 8.5rem);
+}
+
+@media (max-width: 700px) {
+  .numerals .numeral {
+    font-size: 22vw;
+  }
+}

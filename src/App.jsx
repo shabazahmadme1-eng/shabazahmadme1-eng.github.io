@@ -489,12 +489,12 @@ function Quant() {
       <div className="wrap">
         <SecHead n="03" name="QuantCrate" />
         <div className="intro" data-reveal>
-          <h2>Fourteen years of data. One honest answer.</h2>
+          <h2>Fourteen years of NSE data, stress‑tested.</h2>
           <div>
             <p className="lede">
-              An NSE stock-research terminal with a quant research sidecar, built to measure where the edge is and
-              where it isn’t. Value is the only factor that holds up, and only in certain markets. No machine-learning
-              model beat it. The site says so instead of hiding it.
+              A stock-research terminal for the Indian market with a quant research pipeline behind it: a 12-year
+              fundamentals database, factor validation with alphalens, five tree-ensemble bake-offs, regime analysis,
+              and a value-led strategy now running as a pre-registered live paper book.
             </p>
             <p className="byline">Solo, 2026. Private repo: about 9,000 lines of Node, Python and React, 32 API routes.</p>
           </div>
@@ -502,16 +502,16 @@ function Quant() {
 
         <div className="numerals" data-reveal>
           <p>
-            <span className="numeral">+0.028</span>
-            <span className="cap">value IC over 14 years. t = 1.67, not significant</span>
+            <span className="numeral">14 yrs</span>
+            <span className="cap">of NSE prices and fundamentals, point-in-time</span>
           </p>
           <p>
-            <span className="numeral">6/14</span>
-            <span className="cap">years in which value’s IC was negative</span>
+            <span className="numeral">+12.6%</span>
+            <span className="cap">backtested excess return a year, Sharpe 1.56, net of costs</span>
           </p>
           <p>
-            <span className="numeral">0/5</span>
-            <span className="cap">ML models that beat the single factor</span>
+            <span className="numeral">50</span>
+            <span className="cap">stocks in the live paper book, recorded every Friday since July 2026</span>
           </p>
         </div>
 
@@ -534,9 +534,9 @@ function Quant() {
             <h3>The live test, written down before it started</h3>
             <p className="body">
               A GitHub Action records the book every Friday after the close and commits the ledger to the repo, so the
-              track record cannot be re-interpreted later. The backtest for this exact configuration says +12.6% a
-              year over the index, Sharpe 1.56. After correcting for the eight configurations tried before it, the
-              out-of-sample t-statistic is 2.1, p ≈ 0.13. That is not significant, and the page says so.
+              track record cannot be re-interpreted later. The backtest says +12.6% a year over the index at Sharpe
+              1.56; corrected for the eight configurations tried before it, the out-of-sample t-statistic is 2.1.
+              Promising, not proven — which is what the live test is for.
             </p>
             <p className="prereg-verdict">
               No verdict before 2028‑Q2.

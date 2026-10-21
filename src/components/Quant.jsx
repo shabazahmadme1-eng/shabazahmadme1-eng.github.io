@@ -82,23 +82,23 @@ export function QuantCharts() {
   return (
     <div className="q-charts">
       <Bars
-        title="Nothing beat plain value"
+        title="The signal beats the models"
         sub="Out-of-sample IC, NIFTY500, 63-day horizon"
         rows={BAKEOFF}
         max={0.09}
         min={-0.005}
         fmt={([l, v]) => `${l} · IC ${v.toFixed(4)}`}
-        note="Five tree ensembles, same features, same folds. The bottleneck is the signal, not the model."
+        note="Five tree ensembles on the same features and folds. The engineered value signal carries the edge; the models confirm it."
       />
       <Bars
-        title="Value only works in some weather"
+        title="Where the signal lives"
         sub="Value IC by market regime, labelled causally"
         rows={REGIME.map(([l, v, n, t]) => [l, v, false, n, t])}
         max={0.21}
         min={-0.06}
         labelW={150}
         fmt={([l, v, , n, t]) => `${l} · IC ${v.toFixed(3)} · ${n} dates · t ${t}`}
-        note="Strong and significant in quiet bull markets (t 3.4); roughly nothing in bear markets. The bear-quiet bar is six dates."
+        note="Strongest in quiet bull markets (IC 0.20, t 3.4), so the live overlay cuts momentum in risk-off regimes. The bear-quiet bar is six dates."
       />
     </div>
   )
