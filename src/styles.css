@@ -2982,3 +2982,310 @@ h2,
     min-height: 340px;
   }
 }
+
+/* ---------- revision 13: wilder ---------- */
+
+:root {
+  --lean: 0deg;
+}
+
+/* ---- rev-up intro ---- */
+html.is-revving {
+  overflow: hidden;
+}
+
+.rev {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--ink);
+  overflow: hidden;
+  animation: rev-out 0.25s ease-in 0.9s both;
+}
+
+.rev-name {
+  position: absolute;
+  left: 4vw;
+  bottom: 12vh;
+  font-variation-settings: 'wdth' 125, 'wght' 900;
+  font-size: min(24vw, 42vh);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--paper);
+  transform: skewX(-12deg);
+  animation: rev-slam 0.55s cubic-bezier(0.1, 0.9, 0.2, 1) both;
+}
+
+.rev-streaks {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg, transparent 0 46px, rgba(242, 243, 245, 0.12) 46px 48px);
+  transform: skewX(-60deg) translateX(-20%);
+  animation: rev-streak 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.rev-flash {
+  position: absolute;
+  inset: 0;
+  background: var(--signal);
+  opacity: 0;
+  animation: rev-flash 0.35s ease-out 0.5s both;
+}
+
+@keyframes rev-slam {
+  from { transform: skewX(-12deg) translateX(-120vw); }
+  to { transform: skewX(-12deg) translateX(0); }
+}
+@keyframes rev-streak {
+  from { transform: skewX(-60deg) translateX(60%); opacity: 1; }
+  to { transform: skewX(-60deg) translateX(-60%); opacity: 0; }
+}
+@keyframes rev-flash {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes rev-out {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* ---- scroll velocity lean ---- */
+.name-1,
+.name-2,
+.talk-1,
+.talk-2,
+.numeral,
+.fraction,
+.sec-n,
+.ghost,
+h2,
+.pull,
+.sec-head {
+  transform: skewX(calc(-9deg + var(--lean)));
+  transition: transform 0.12s linear;
+}
+
+/* ---- headlight sweep across the hero name ---- */
+.hero-name {
+  position: relative;
+}
+
+.hero-name::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: -30%;
+  width: 18%;
+  background: linear-gradient(90deg, transparent, rgba(228, 0, 43, 0.55), rgba(242, 243, 245, 0.75), rgba(228, 0, 43, 0.55), transparent);
+  transform: skewX(-24deg);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: sweep 5.5s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+@keyframes sweep {
+  0%, 62% { left: -30%; opacity: 0; }
+  64% { opacity: 1; }
+  88% { left: 115%; opacity: 1; }
+  89%, 100% { left: 115%; opacity: 0; }
+}
+
+/* ---- pit board ---- */
+.board {
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
+  border-top: 3px solid var(--signal);
+  border-bottom: 3px solid var(--signal);
+  padding: 14px 0;
+}
+
+.board-track {
+  display: flex;
+  width: max-content;
+  animation: board 28s linear infinite;
+}
+
+.board span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6em;
+  padding-right: 0.6em;
+  font-variation-settings: 'wdth' 118, 'wght' 850;
+  font-size: clamp(1.6rem, 3.2vw, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: skewX(-9deg);
+}
+
+.board i {
+  font-style: normal;
+  color: var(--signal);
+}
+
+@keyframes board {
+  to { transform: translateX(-50%); }
+}
+
+/* ---- skid marks behind the pictograms ---- */
+.tiles li {
+  position: relative;
+  overflow: hidden;
+}
+
+.tiles li::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 34px;
+  width: 170px;
+  height: 90px;
+  background: repeating-linear-gradient(-14deg, transparent 0 10px, var(--ink) 10px 15px, transparent 15px 22px, var(--ink) 22px 26px);
+  opacity: 0.1;
+  transform: skewX(-30deg);
+  pointer-events: none;
+}
+
+/* ---- livery hatches ---- */
+#purser::after,
+#record::after {
+  content: '';
+  position: absolute;
+  right: -6%;
+  top: 0;
+  width: 26%;
+  height: 100%;
+  background: repeating-linear-gradient(-62deg, transparent 0 60px, rgba(228, 0, 43, 0.9) 60px 66px, transparent 66px 82px, rgba(11, 12, 15, 0.85) 82px 84px);
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+#record::after {
+  background: repeating-linear-gradient(-62deg, transparent 0 60px, var(--signal) 60px 66px, transparent 66px 82px, var(--paper) 82px 84px);
+  opacity: 0.08;
+}
+
+/* ---- diagonal red swipe on hover ---- */
+.builds li > a,
+.record li {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.builds li > a::before,
+.record li::before {
+  content: '';
+  position: absolute;
+  inset: 0 -12% 0 -12%;
+  z-index: -1;
+  background: var(--signal);
+  transform: skewX(-24deg) scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+.builds a:hover::before,
+.record li:hover::before {
+  transform: skewX(-24deg) scaleX(1);
+}
+
+.builds a:hover,
+.record li:hover {
+  background: transparent;
+  color: var(--paper);
+}
+
+.builds a:hover .b-name,
+.record li:hover .rec-id {
+  color: var(--ink);
+}
+
+.record li:hover .rec-status {
+  border-color: var(--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-name::after,
+  .board-track {
+    animation: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .rev-name {
+    font-size: 26vw;
+  }
+  #purser::after,
+  #record::after {
+    display: none;
+  }
+}
+
+/* the intro's parts start only once the face is loaded */
+.rev-name,
+.rev-streaks,
+.rev-flash {
+  animation-play-state: paused;
+}
+
+.rev.is-ready .rev-name,
+.rev.is-ready .rev-streaks,
+.rev.is-ready .rev-flash {
+  animation-play-state: running;
+}
+
+.rev {
+  animation: rev-out 0.25s ease-in 1.25s both;
+}
+
+/* a fallback face never flashes: the name is hidden until the real one is in */
+.rev-name {
+  visibility: hidden;
+}
+
+.rev.is-ready .rev-name {
+  visibility: visible;
+}
+
+.rev {
+  animation: none;
+}
+
+.rev.is-ready {
+  animation: rev-out 0.25s ease-in 1s both;
+}
+
+/* after the cap, the fallback shows rather than a blank frame */
+.rev.is-ready .rev-name {
+  visibility: visible;
+}
+
+/* build names never break mid-word: a narrower axis instead of a hyphen-less wrap */
+.b-name {
+  font-variation-settings: 'wdth' 108, 'wght' 900;
+  font-size: clamp(1.15rem, 1.75vw, 1.7rem);
+  letter-spacing: -0.02em;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}
+
+@media (max-width: 900px) {
+  .b-name {
+    font-size: 1.35rem;
+  }
+}
+
+/* the intro name lands fully in frame on any screen */
+.rev-name {
+  font-size: min(17vw, 34vh);
+}
+
+@media (max-width: 700px) {
+  .rev-name {
+    font-size: 16vw;
+  }
+}

@@ -13,6 +13,7 @@ import EbmBars from './components/EbmBars.jsx'
 import Scanpath from './components/Scanpath.jsx'
 import Runway from './components/Runway.jsx'
 import Helix from './components/Helix.jsx'
+import { Intro, Board, useScrollLean } from './components/Wild.jsx'
 import { LINKS, PURSER_STACK, RECORD, BUILDS, STACK } from './data.js'
 import { PURSER_CHECKS, PURSER_PROBLEMS, GAIT_RIGOR } from './content.js'
 
@@ -666,14 +667,17 @@ function Contact() {
 
 export default function App() {
   useReveal()
+  useScrollLean()
   return (
     <>
+      <Intro />
       <Cursor />
       <Progress />
       <Nav />
       <main>
         <Hero />
         <Purser />
+        <Board />
         <Gait />
         <Lab />
         <Record />
